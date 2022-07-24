@@ -10,8 +10,10 @@ const io = require("socket.io")(server, {
 });
 
 app.use(cors());
+app.use(express.static(path.join(__dirname+"public")))
 
 const PORT = process.env.PORT || 5000;
+
 
 app.get("/", (req, res) => {
   res.json("Running");
@@ -19,7 +21,6 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   socket.emit("me", socket.id);
-
   socket.on("disconnect", () => {
     socket.broadcast.emit("callEnded");
   });
